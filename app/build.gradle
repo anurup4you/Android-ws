@@ -1,26 +1,40 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
 
 
     defaultConfig {
         applicationId "com.bazarmart"
         minSdkVersion 19
-        targetSdkVersion 28
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
+        debug {
+            //(EXAMPLE)buildConfigField "String", "SERVER_URL", '"https://dev.bazarmart.com/api/"'--dev
+            //(EXAMPLE)buildConfigField "String", "SERVER_URL", '"https://www.bazarmart.com/api/"'--live
+            buildConfigField "String", "SERVER_URL", '""'
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            //(EXAMPLE)buildConfigField "String", "SERVER_URL", '"https://www.bazarmart.com/api/"'--live
+            buildConfigField "String", "SERVER_URL", '""'
         }
     }
-
+    buildFeatures{
+        dataBinding = true
+        // for view binding :
+        // viewBinding = true
+    }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 dependencies {
@@ -29,6 +43,10 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'io.paperdb:paperdb:2.6'// for a local shared preference
+    implementation 'com.intuit.sdp:sdp-android:1.0.5'// for sdp calculation using dimens
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'// for network API calls
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'// for json conversion after parsing
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'// for printing raw response in log
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
